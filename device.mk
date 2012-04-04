@@ -21,6 +21,7 @@
 # Everything in this directory will become public
 
 DEVICE_PREBUILT := device/motorola/omap34com/prebuilt
+DEVICE_PACKAGE_OVERLAYS := device/motorola/omap34com/overlay
 
 # This device is xhdpi.  However the platform doesn't
 # currently contain all of the bitmaps at xhdpi density so
@@ -33,8 +34,8 @@ PRODUCT_AAPT_PREF_CONFIG := hdpi
 PRODUCT_PACKAGES := \
 	camera.omap3 \
 	hwcomposer.default \
-	libcamera \
-	libui
+        libcamera \
+        libui
 
 # Modem
 PRODUCT_PACKAGES += \
@@ -78,10 +79,7 @@ PRODUCT_PACKAGES += \
 	su \
 	mot_boot_mode \
 	charge_only_mode \
-	com.android.future.usb.accessory \
-	FileManager \
-	Torch \
-	Usb
+	com.android.future.usb.accessory
 
 # Live Wallpapers
 PRODUCT_PACKAGES += \
@@ -134,8 +132,11 @@ PRODUCT_COPY_FILES += \
 	$(DEVICE_PREBUILT)/etc/powervr.ini:system/etc/powervr.ini \
 	$(DEVICE_PREBUILT)/etc/vold.fstab:system/etc/vold.fstab \
 	$(DEVICE_PREBUILT)/etc/sysctl.conf:system/etc/sysctl.conf \
+	$(DEVICE_PREBUILT)/etc/init.d/11redraw:system/etc/init.d/11redraw \
 	$(DEVICE_PREBUILT)/etc/init.d/12scheduler:system/etc/init.d/12scheduler \
 	$(DEVICE_PREBUILT)/etc/init.d/13kernel:system/etc/init.d/13kernel \
+	$(DEVICE_PREBUILT)/etc/init.d/14multitouch:system/etc/init.d/14multitouch \
+	$(DEVICE_PREBUILT)/xbin/multitouch:system/xbin/multitouch
 
 # Permissions files
 PRODUCT_COPY_FILES += \
@@ -185,13 +186,11 @@ PRODUCT_PROPERTY_OVERRIDES += \
 	ro.com.google.gmsversion=2.3_r3 \
 	ro.kernel.android.ril=yes \
 	ro.product.multi_touch_enabled=true \
-	ro.media.dec.jpeg.memcap=20000000 \
-	ro.ril.ignore.linkiperror=true \
+        ro.media.dec.jpeg.memcap=20000000 \
 	ro.setupwizard.enable_bypass=1 \
 	ro.setupwizard.mode=OPTIONAL \
 	ro.telephony.call_ring.delay=1000 \
 	ro.telephony.call_ring.multiple=false \
-	ro.telephony.sms_segment_size=160 \
 	ro.kernel.android.checkjni=0 \
 	dalvik.vm.checkjni=false \
 	dalvik.vm.dexopt-data-only=1
