@@ -88,7 +88,7 @@ OPTIONS.extra_script = None
 OPTIONS.worker_threads = 3
 OPTIONS.backuptool = False
 OPTIONS.override_device = 'auto'
-OPTIONS.no_assert = False
+OPTIONS.no_assert = True
 
 def MostPopularKey(d, default):
   """Given a dict, return the key corresponding to the largest
