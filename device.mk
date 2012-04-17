@@ -34,8 +34,8 @@ PRODUCT_AAPT_PREF_CONFIG := hdpi
 PRODUCT_PACKAGES := \
 	camera.omap3 \
 	hwcomposer.default \
-        libcamera \
-        libui
+	libcamera \
+	libui
 
 # Modem
 PRODUCT_PACKAGES += \
@@ -155,6 +155,14 @@ PRODUCT_COPY_FILES += \
 	frameworks/base/data/etc/android.software.sip.voip.xml:system/etc/permissions/android.software.sip.voip.xml \
 	packages/wallpapers/LivePicker/android.software.live_wallpaper.xml:/system/etc/permissions/android.software.live_wallpaper.xml \
 
+# wifi
+PRODUCT_COPY_FILES += \
+	$(DEVICE_PREBUILT)/etc/wifi/fw_tiwlan_ap.bin:system/etc/wifi/fw_tiwlan_ap.bin \
+	$(DEVICE_PREBUILT)/etc/wifi/fw_wlan1271.bin:system/etc/wifi/fw_wlan1271.bin \
+	$(DEVICE_PREBUILT)/etc/wifi/tiwlan.ini:system/etc/wifi/tiwlan.ini \
+	$(DEVICE_PREBUILT)/etc/wifi/tiwlan_ap.ini:system/etc/wifi/tiwlan_ap.ini \
+	$(DEVICE_PREBUILT)/etc/wifi/wpa_supplicant.conf:system/etc/wifi/wpa_supplicant.conf
+
 # these need to be here for the installer, just put them here for now
 PRODUCT_COPY_FILES += \
 	device/motorola/omap34com/releaseutils/mke2fs:system/bin/mke2fs \
@@ -187,12 +195,13 @@ PRODUCT_PROPERTY_OVERRIDES += \
 	ro.com.google.gmsversion=2.3_r3 \
 	ro.kernel.android.ril=yes \
 	ro.product.multi_touch_enabled=true \
-        ro.media.dec.jpeg.memcap=20000000 \
+	ro.media.dec.jpeg.memcap=20000000 \
 	ro.setupwizard.enable_bypass=1 \
 	ro.setupwizard.mode=OPTIONAL \
 	ro.telephony.call_ring.delay=1000 \
 	ro.telephony.call_ring.multiple=false \
 	ro.kernel.android.checkjni=0 \
+	ro.HOME_APP_ADJ=1 \
 	dalvik.vm.checkjni=false \
 	dalvik.vm.dexopt-data-only=1
 
