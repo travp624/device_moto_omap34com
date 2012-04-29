@@ -1,0 +1,25 @@
+#!/system/xbin/bash
+
+busybox mount -o remount,rw /system
+
+echo "ro.ril.hsxpa=2" >> /system/build.prop
+echo "ro.ril.gprsclass=10" >> /system/build.prop
+echo "ro.ril.hep=1" >> /system/build.prop
+echo "ro.ril.hsdpa.category=8" >> /system/build.prop
+echo "ro.ril.enable.3g.prefix=1" >> /system/build.prop
+echo "ro.ril.htcmaskw1.bitmask=4294967295" >> /system/build.prop
+echo "ro.ril.htcmaskw1=14449" >> /system/build.prop
+echo "ro.ril.hsupa.category=6" >> /system/build.prop
+echo "ro.ril.def.agps.mode=2" >> /system/build.prop
+echo "ro.ril.def.agps.feature=1" >> /system/build.prop
+echo "ro.ril.enable.sdr=1" >> /system/build.prop
+echo "ro.ril.enable.gea3=1" >> /system/build.prop
+echo "ro.ril.enable.fd.plmn.prefix=23402,23410,23411" >> /system/build.prop
+echo "ro.ril.disable.power.collapse=0" >> /system/build.prop
+echo "ro.ril.enable.a52=0" >> /system/build.prop
+echo "ro.ril.enable.a53=0" >> /system/build.prop
+echo "ro.ril.enable.dtm=0" >> /system/build.prop
+
+busybox mount -o remount,ro /system
+
+echo "3G speed hack has been applied. Please reboot for this to take effect."
