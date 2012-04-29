@@ -23,8 +23,6 @@
 //#define LOG_NDEBUG 0
 #define LOG_FULL_PARAMS
 
-//#define STORE_METADATA_IN_BUFFER
-
 #include <hardware/camera.h>
 #include <ui/Overlay.h>
 #include <binder/IMemory.h>
@@ -106,7 +104,7 @@ static inline void log_camera_params(const char* name,
 #endif
 }
 
-void Yuv422iToRgb565 (char* rgb, char* yuv422i, int width, int height)
+inline void Yuv422iToRgb565 (char* rgb, char* yuv422i, int width, int height)
 {
     int yuv_index = 0;
     int rgb_index = 0;
@@ -238,7 +236,7 @@ void CameraHAL_DataCb(int32_t msg_type, const sp<IMemory>& dataPtr,
     if (!user)
         return;
 
-    if (msg_type ==CAMERA_MSG_RAW_IMAGE) {
+    if (msg_type == CAMERA_MSG_RAW_IMAGE) {
         lcdev->hwif->disableMsgType(CAMERA_MSG_RAW_IMAGE);
         return;
     }
@@ -289,7 +287,6 @@ void CameraHAL_NotifyCb(int32_t msg_type, int32_t ext1, int32_t ext2, void *user
 int CameraHAL_GetCam_Info(int camera_id, struct camera_info *info)
 {
     int rv = 0;
-    LOGV("CameraHAL_GetCam_Info()");
 
     CameraInfo cam_info;
     HAL_getCameraInfo(camera_id, &cam_info);
@@ -343,12 +340,15 @@ void CameraHAL_FixupParams(struct camera_device *device,
 
     if (!settings.get("mot-max-areas-to-focus"))
         settings.set("mot-max-areas-to-focus", "1");
+
     if (!settings.get("mot-areas-to-focus"))
         settings.set("mot-areas-to-focus", "0");
 
-    settings.set("zoom-ratios", "100,200,300,400,500,600");
+    if (!settings.get("zoom-ratios"))
+        settings.set("zoom-ratios", "100,200,300,400,500,600");
 
-    settings.set("max-zoom", "4");
+    if (!settings.get("max-zoom"))
+        settings.set("max-zoom", "4");
 
     /* ISO */
     settings.set("iso", "auto");
@@ -356,14 +356,18 @@ void CameraHAL_FixupParams(struct camera_device *device,
     char iso_values[256];
     memset(iso_values, '\0', sizeof(iso_values));
     if ((!settings.get("iso-values") && moto_iso_values)) {
+        int count = 0;
         char *iso = strtok(moto_iso_values, ",");
         while (iso != NULL) {
-            strcat(iso_values, ",");
+            if (count > 0)
+                strcat(iso_values, ",");
+
             if (isdigit(iso[0]))
                 strcat(iso_values, "ISO");
 
             strcat(iso_values, iso);
-            iso = strtok(NULL, " ,");
+            iso = strtok(NULL, ",");
+            count++;
         }
     }
     settings.set("iso-values", iso_values);
@@ -548,18 +552,14 @@ int camera_preview_enabled(struct camera_device *device)
 int camera_store_meta_data_in_buffers(struct camera_device *device, int enable)
 {
     int rv = -EINVAL;
-#ifdef STORE_METADATA_IN_BUFFER
     legacy_camera_device *lcdev = NULL;
 
     if (!device)
         return rv;
 
     lcdev = (legacy_camera_device*) device;
-    return ret = lcdev->hwif->storeMetaDataInBuffers(enable);
-#else
-    LOGW("camera_store_meta_data_in_buffers:\n");
+//    return ret = lcdev->hwif->storeMetaDataInBuffers(enable);
     return rv;
-#endif
 }
 
 int camera_start_recording(struct camera_device *device)
@@ -606,8 +606,8 @@ void camera_release_recording_frame(struct camera_device *device,
     if (!device)
         return;
 
-    /* TODO Implement */
     lcdev = (legacy_camera_device*) device;
+//    lcdev->hwif->releaseRecordingFrame(opaque);
     return;
 }
 
@@ -664,31 +664,39 @@ int camera_set_parameters(struct camera_device *device,
 {
     int rv = -EINVAL;
     legacy_camera_device *lcdev = NULL;
+    CameraParameters camParams;
 
-    if (!device || !params)
+    if (!device)
         return rv;
 
-    String8 s(params);
-    CameraParameters p(s);
-    log_camera_params(__FUNCTION__, p);
-
     lcdev = (legacy_camera_device*) device;
-    return lcdev->hwif->setParameters(p);
+    String8 params_str8(params);
+    camParams.unflatten(params_str8);
+
+    return lcdev->hwif->setParameters(camParams);
 }
 
 char *camera_get_parameters(struct camera_device *device)
 {
+    char *params = NULL;
     legacy_camera_device *lcdev = NULL;
+    String8 params_str8;
+    CameraParameters camParams;
 
     if (!device)
         return NULL;
 
     lcdev = (legacy_camera_device*) device;
-    CameraParameters params(lcdev->hwif->getParameters());
-    CameraHAL_FixupParams(device, params);
-    log_camera_params(__FUNCTION__, params);
+    camParams = lcdev->hwif->getParameters();
 
-    return strdup((char *)params.flatten().string());
+    CameraHAL_FixupParams(device, camParams);
+    log_camera_params(__FUNCTION__, camParams);
+
+    params_str8 = camParams.flatten();
+    params = (char*)malloc(sizeof(char) *(params_str8.length() + 1));
+    strcpy(params, params_str8.string());
+
+    return params;
 }
 
 void camera_put_parameters(struct camera_device *device, char *params)
@@ -718,21 +726,14 @@ void camera_release(struct camera_device *device)
     if (!device)
         return;
 
+    lcdev = (legacy_camera_device*) device;
     lcdev->hwif->release();
 }
 
 int camera_dump(struct camera_device *device, int fd)
 {
-    int rv = -EINVAL;
-    Vector<String16> args;
-    legacy_camera_device *lcdev = NULL;
-
-    if (!device)
-        return rv;
-
-
-    lcdev = (legacy_camera_device*) device;
-//    return lcdev->hwif->dump(fd, args);
+    int rv = NO_ERROR;
+    LOGD("camera_dump");
     return rv;
 }
 
@@ -800,7 +801,6 @@ int camera_device_open(const hw_module_t* module, const char *name,
     camera_ops->cancel_auto_focus          = camera_cancel_auto_focus;
     camera_ops->take_picture               = camera_take_picture;
     camera_ops->cancel_picture             = camera_cancel_picture;
-
     camera_ops->set_parameters             = camera_set_parameters;
     camera_ops->get_parameters             = camera_get_parameters;
     camera_ops->put_parameters             = camera_put_parameters;
@@ -810,16 +810,26 @@ int camera_device_open(const hw_module_t* module, const char *name,
 
     lcdev->id = cameraId;
     lcdev->hwif = HAL_openCameraHardware(cameraId);
+    *device = &lcdev->device.common;
+
     if (lcdev->hwif == NULL) {
          ret = -EIO;
          goto err_create_camera_hw;
     }
-    *device = &lcdev->device.common;
-    return NO_ERROR;
+
+    return ret;
 
 err_create_camera_hw:
-    free(lcdev);
-    free(camera_ops);
+    if (lcdev) {
+        free(lcdev);
+        lcdev = NULL;
+    }
+    if (camera_ops) {
+        free(camera_ops);
+        camera_ops = NULL;
+    }
+    *device = NULL;
+
     return ret;
 }
 

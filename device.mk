@@ -73,6 +73,10 @@ PRODUCT_PACKAGES += \
 	libCustomWifi \
 	wlan_loader
 
+# Bluetooth configuration files
+PRODUCT_COPY_FILES += \
+	system/bluetooth/data/main.conf:system/etc/bluetooth/main.conf
+
 # Apps and bin
 PRODUCT_PACKAGES += \
 	Superuser \
@@ -137,7 +141,8 @@ PRODUCT_COPY_FILES += \
 	$(DEVICE_PREBUILT)/etc/init.d/13kernel:system/etc/init.d/13kernel \
 	$(DEVICE_PREBUILT)/etc/init.d/14multitouch:system/etc/init.d/14multitouch \
 	$(DEVICE_PREBUILT)/xbin/multitouch:system/xbin/multitouch \
-	$(DEVICE_PREBUILT)/xbin/scheduler:system/xbin/scheduler
+	$(DEVICE_PREBUILT)/xbin/scheduler:system/xbin/scheduler \
+	$(DEVICE_PREBUILT)/xbin/speed:system/xbin/speed
 
 # Permissions files
 PRODUCT_COPY_FILES += \
