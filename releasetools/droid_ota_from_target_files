@@ -356,16 +356,6 @@ def WriteFullOTAPackage(input_zip, output_zip):
 #  if not OPTIONS.omit_prereq:
 #    ts = GetBuildProp("ro.build.date.utc", input_zip)
 #    script.AssertOlderBuild(ts)
-
-  script.Print(" ")
-  script.Print("        ___       ____    _  __  _____   ")
-  script.Print("       /   \     / __ \  | |/ / |  _  \  ")
-  script.Print("      /  ^  \   | |  | | | ' /  | |_)  | ")
-  script.Print("     /  /_\  \  | |  | | |  <   |  ___/  ")
-  script.Print("    /  _____  \ | `--' | | . \  | |      ")
-  script.Print("   /__/     \__\ \____/  |_|\_\ |_|      ")
-  script.Print(" ")
-
 # kernel check...
 #  script.Print(" Checking Kernel Version...  ")
 #  script.Print(" If install aborts here make ")
