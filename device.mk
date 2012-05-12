@@ -20,15 +20,15 @@
 #
 # Everything in this directory will become public
 
-DEVICE_PREBUILT := device/motorola/omap34com/prebuilt
-DEVICE_PACKAGE_OVERLAYS := device/motorola/omap34com/overlay
+DEVICE_PREBUILT := device/moto/omap34com/prebuilt
+DEVICE_PACKAGE_OVERLAYS := device/moto/omap34com/overlay
 
 # This device is xhdpi.  However the platform doesn't
 # currently contain all of the bitmaps at xhdpi density so
 # we do this little trick to fall back to the hdpi version
 # if the xhdpi doesn't exist.
-PRODUCT_AAPT_CONFIG := normal hdpi
-PRODUCT_AAPT_PREF_CONFIG := hdpi
+PRODUCT_AAPT_CONFIG := normal hdpi xhdpi
+PRODUCT_AAPT_PREF_CONFIG := xhdpi
 
 # Camera
 PRODUCT_PACKAGES := \
@@ -162,10 +162,10 @@ PRODUCT_COPY_FILES += \
 
 # these need to be here for the installer, just put them here for now
 PRODUCT_COPY_FILES += \
-	device/motorola/omap34com/releaseutils/mke2fs:system/bin/mke2fs \
-	device/motorola/omap34com/releaseutils/tune2fs:system/bin/tune2fs \
-	device/motorola/omap34com/releaseutils/check_kernel:system/etc/releaseutils/check_kernel \
-	device/motorola/omap34com/releaseutils/finalize_release:system/etc/finalize_release
+	device/moto/omap34com/releaseutils/mke2fs:system/bin/mke2fs \
+	device/moto/omap34com/releaseutils/tune2fs:system/bin/tune2fs \
+	device/moto/omap34com/releaseutils/check_kernel:system/etc/releaseutils/check_kernel \
+	device/moto/omap34com/releaseutils/finalize_release:system/etc/finalize_release
 
 # Hijack files
 PRODUCT_COPY_FILES += \
@@ -174,7 +174,7 @@ PRODUCT_COPY_FILES += \
 
 # Copy all common kernel modules
 PRODUCT_COPY_FILES += $(shell \
-	find device/motorola/omap34com/modules -name '*.ko' \
+	find device/moto/omap34com/modules -name '*.ko' \
 	| sed -r 's/^\/?(.*\/)([^/ ]+)$$/\1\2:system\/lib\/modules\/\2/' \
 	| tr '\n' ' ')
 
@@ -210,4 +210,4 @@ PRODUCT_LOCALES += en_US
 
 $(call inherit-product, frameworks/base/build/phone-hdpi-512-dalvik-heap.mk)
 $(call inherit-product, hardware/ti/omap3/Android.mk)
-$(call inherit-product-if-exists, vendor/motorola/omap34com/device-vendor.mk)
+$(call inherit-product-if-exists, vendor/moto/omap34com/device-vendor.mk)

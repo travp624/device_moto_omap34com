@@ -20,7 +20,7 @@
 USE_CAMERA_STUB := false
 
 # Use the non-open-source parts, if they're present
--include vendor/motorola/omap34com/BoardConfigVendor.mk
+-include vendor/moto/omap34com/BoardConfigVendor.mk
 
 # Processor
 TARGET_NO_BOOTLOADER := true
@@ -46,7 +46,7 @@ COMMON_GLOBAL_CFLAGS += -DOMAP_ENHANCEMENT -DTARGET_OMAP3
 endif
 
 # Graphics
-BOARD_EGL_CFG := device/motorola/omap34com/prebuilt/etc/egl.cfg
+BOARD_EGL_CFG := device/moto/omap34com/prebuilt/etc/egl.cfg
 COMMON_GLOBAL_CFLAGS += -DMISSING_EGL_EXTERNAL_IMAGE -DMISSING_EGL_PIXEL_FORMAT_YV12 -DMISSING_GRALLOC_BUFFERS
 COMMON_GLOBAL_CFLAGS += -DOMAP_COMPAT -DMOTOROLA_UIDS -DBINDER_COMPAT
 BOARD_NO_RGBX_8888 := true
@@ -63,7 +63,7 @@ TARGET_RECOVERY_PRE_COMMAND := "echo 1 > /data/.recovery_mode; sync;"
 TARGET_RECOVERY_PRE_COMMAND_CLEAR_REASON := true
 
 #TARGET_PROVIDES_INIT_RC := true
-BOARD_MKE2FS := device/motorola/omap34com/releaseutils/mke2fs
+BOARD_MKE2FS := device/moto/omap34com/releaseutils/mke2fs
 
 # Wifi related defines
 BOARD_WLAN_DEVICE           := wl1271
@@ -126,8 +126,8 @@ TARGET_NEEDS_MOTOROLA_HIJACK := true
 
 # OTA Packaging
 TARGET_PROVIDES_RELEASETOOLS := true
-TARGET_RELEASETOOL_OTA_FROM_TARGET_SCRIPT := device/motorola/omap34com/releasetools/droid_ota_from_target_files
-TARGET_RELEASETOOL_IMG_FROM_TARGET_SCRIPT := device/motorola/omap34com/releasetools/droid_img_from_target_files
+TARGET_RELEASETOOL_OTA_FROM_TARGET_SCRIPT := device/moto/omap34com/releasetools/droid_ota_from_target_files
+TARGET_RELEASETOOL_IMG_FROM_TARGET_SCRIPT := device/moto/omap34com/releasetools/droid_img_from_target_files
 
 # Misc.
 #BOARD_USE_BATTERY_CHARGE_COUNTER := true

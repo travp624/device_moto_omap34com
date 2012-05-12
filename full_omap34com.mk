@@ -26,10 +26,10 @@ PRODUCT_PACKAGES := \
     Camera
 
 # Inherit from those products. Most specific first.
-$(call inherit-product, device/motorola/omap34com/full_base_telephony.mk)
+$(call inherit-product, device/moto/omap34com/full_base_telephony.mk)
 
 # Inherit from tuna device
-$(call inherit-product, device/motorola/omap34com/device.mk)
+$(call inherit-product, device/moto/omap34com/device.mk)
 
 # Set those variables here to overwrite the inherited values.
 PRODUCT_NAME := full_omap34com
