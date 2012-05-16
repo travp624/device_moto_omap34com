@@ -32,11 +32,8 @@ PRODUCT_AAPT_PREF_CONFIG := xhdpi
 
 # Camera
 PRODUCT_PACKAGES := \
-	overlay.omap3 \
-	camera.omap3 \
-	hwcomposer.default \
-	libcamera \
-	libui
+	Camera camera.omap3 libcamera
+	hwcomposer.default libui
 
 # Modem
 PRODUCT_PACKAGES += \
@@ -51,10 +48,8 @@ PRODUCT_PACKAGES += libGLESv2 libEGL libGLESv1_CM
 
 # for jpeg hw encoder/decoder
 PRODUCT_PACKAGES += \
-	libskiahw \
-	libOMX.TI.JPEG.Encoder \
-	libOMX.TI.JPEG.decoder \
-	libstagefrighthw
+	libskiahw libstagefrighthw \
+	libOMX.TI.JPEG.Encoder libOMX.TI.JPEG.decoder \
 
 # OMX
 PRODUCT_PACKAGES += \
@@ -78,20 +73,24 @@ PRODUCT_PACKAGES += \
 	libCustomWifi \
 	wlan_loader
 
+# Bluetooth configuration files
+PRODUCT_COPY_FILES += \
+	system/bluetooth/data/main.conf:system/etc/bluetooth/main.conf
+
+# Core
+PRODUCT_PACKAGES += mot_boot_mode charge_only_mode
+
 # Apps and bin
-PRODUCT_PACKAGES += \
-	Superuser \
-	su \
-	mot_boot_mode \
-	charge_only_mode \
-	com.android.future.usb.accessory
+PRODUCT_PACKAGES += Superuser su FileManager Torch Usb
 
 # Live Wallpapers
 PRODUCT_PACKAGES += \
-	LiveWallpapers \
-	LiveWallpapersPicker \
-	VisualizationWallpapers \
+	LiveWallpapers LiveWallpapersPicker \
+	VisualizationWallpapers MagicSmokeWallpapers \
 	librs_jni
+
+# Themes
+PRODUCT_PACKAGES += ThemeChooser Androidian
 
 # Key Layouts
 PRODUCT_COPY_FILES := \
@@ -155,8 +154,6 @@ PRODUCT_COPY_FILES += \
 	frameworks/base/data/etc/android.hardware.sensor.light.xml:system/etc/permissions/android.hardware.sensor.light.xml \
 	frameworks/base/data/etc/android.hardware.sensor.proximity.xml:system/etc/permissions/android.hardware.sensor.proximity.xml \
 	frameworks/base/data/etc/android.hardware.touchscreen.multitouch.distinct.xml:system/etc/permissions/android.hardware.touchscreen.multitouch.distinct.xml \
-	frameworks/base/data/etc/android.hardware.usb.host.xml:system/etc/permissions/android.hardware.usb.host.xml \
-	frameworks/base/data/etc/android.hardware.usb.accessory.xml:system/etc/permissions/android.hardware.usb.accessory.xml \
 	frameworks/base/data/etc/android.hardware.wifi.xml:system/etc/permissions/android.hardware.wifi.xml \
 	frameworks/base/data/etc/android.software.sip.voip.xml:system/etc/permissions/android.software.sip.voip.xml \
 	packages/wallpapers/LivePicker/android.software.live_wallpaper.xml:/system/etc/permissions/android.software.live_wallpaper.xml \

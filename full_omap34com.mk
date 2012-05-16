@@ -21,10 +21,6 @@
 # lines, full and toro, hence its name.
 #
 
-# Camera
-PRODUCT_PACKAGES := \
-    Camera
-
 # Inherit from those products. Most specific first.
 $(call inherit-product, device/moto/omap34com/full_base_telephony.mk)
 
