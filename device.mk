@@ -76,8 +76,10 @@ PRODUCT_PACKAGES += \
 
 # Wifi
 PRODUCT_PACKAGES += \
-	libCustomWifi \
-	wlan_loader
+	iwmulticall hostap wlan_loader wlan_cu wpa_supplicant \
+	libhostapdcli libCustomWifi libwpa_client libtiOsLib \
+	tiwlan.ini dhcpcd.conf wpa_supplicant.conf hostapd.conf \
+	tiap_loader tiap_cu ndc
 
 # Bluetooth configuration files
 PRODUCT_COPY_FILES += \
@@ -87,7 +89,7 @@ PRODUCT_COPY_FILES += \
 PRODUCT_PACKAGES += mot_boot_mode charge_only_mode
 
 # Apps and bin
-PRODUCT_PACKAGES += Superuser su FileManager Torch Usb
+PRODUCT_PACKAGES += Superuser su FileManager Torch Usb Apollo
 
 # Live Wallpapers
 PRODUCT_PACKAGES += \
@@ -130,12 +132,27 @@ PRODUCT_COPY_FILES += \
 	$(DEVICE_PREBUILT)/imgtec/libgles2_texture_stream.so:system/lib/egl/libgles2_texture_stream.so \
 	$(DEVICE_PREBUILT)/imgtec/gralloc.omap3.so:system/lib/hw/gralloc.omap3.so
 
+# DSP
+PRODUCT_COPY_FILES += \
+	$(DEVICE_PREBUILT)/TI_DSP/bios/baseimage.dof:system/lib/dsp/baseimage.dof \
+	$(DEVICE_PREBUILT)/TI_DSP/codecs/conversions.dll64P:system/lib/dsp/conversions.dll64P \
+	$(DEVICE_PREBUILT)/TI_DSP/codecs/dctn_dyn.dll64P:system/lib/dsp/dctn_dyn.dll64P \
+	$(DEVICE_PREBUILT)/TI_DSP/codecs/h264vdec_sn.dll64P:system/lib/dsp/h264vdec_sn.dll64P \
+	$(DEVICE_PREBUILT)/TI_DSP/codecs/jpegdec_sn.dll64P:system/lib/dsp/jpegdec_sn.dll64P \
+	$(DEVICE_PREBUILT)/TI_DSP/codecs/jpegenc_sn.dll64P:system/lib/dsp/jpegenc_sn.dll64P \
+	$(DEVICE_PREBUILT)/TI_DSP/codecs/m4venc_sn.dll64P:system/lib/dsp/m4venc_sn.dll64P \
+	$(DEVICE_PREBUILT)/TI_DSP/codecs/mp4vdec_sn.dll64P:system/lib/dsp/mp4vdec_sn.dll64P \
+	$(DEVICE_PREBUILT)/TI_DSP/codecs/mpeg4aacdec_sn.dll64P:system/lib/dsp/mpeg4aacdec_sn.dll64P \
+	$(DEVICE_PREBUILT)/TI_DSP/codecs/postprocessor_dualout.dll64P:system/lib/dsp/postprocessor_dualout.dll64P \
+	$(DEVICE_PREBUILT)/TI_DSP/codecs/qosdyn_3430.dll64P:system/lib/dsp/qosdyn_3430.dll64P \
+	$(DEVICE_PREBUILT)/TI_DSP/codecs/ringio.dll64P:system/lib/dsp/ringio.dll64P \
+	$(DEVICE_PREBUILT)/TI_DSP/codecs/usn.dll64P:system/lib/dsp/usn.dll64P \
+	$(DEVICE_PREBUILT)/TI_DSP/codecs/vpp_sn.dll64P:system/lib/dsp/vpp_sn.dll64P
+
 # Prebuilts
 PRODUCT_COPY_FILES += \
-	$(DEVICE_PREBUILT)/bin/adbd:system/bin/adbd \
-	$(DEVICE_PREBUILT)/bin/backuptool.sh:system/bin/backuptoo.sh \
 	$(DEVICE_PREBUILT)/bin/mount_ext3.sh:system/bin/mount_ext3.sh \
-	$(DEVICE_PREBUILT)/bin/sysinit:system/bin/sysinit \
+	$(DEVICE_PREBUILT)/bin/adbd:system/bin/adbd \
 	$(DEVICE_PREBUILT)/etc/apns-conf.xml:system/etc/apns-conf.xml \
 	$(DEVICE_PREBUILT)/etc/egl.cfg:system/etc/egl.cfg \
 	$(DEVICE_PREBUILT)/etc/gps.conf:system/etc/gps.conf \
@@ -147,8 +164,7 @@ PRODUCT_COPY_FILES += \
 	$(DEVICE_PREBUILT)/etc/init.d/13kernel:system/etc/init.d/13kernel \
 	$(DEVICE_PREBUILT)/etc/init.d/14multitouch:system/etc/init.d/14multitouch \
 	$(DEVICE_PREBUILT)/xbin/multitouch:system/xbin/multitouch \
-	$(DEVICE_PREBUILT)/xbin/scheduler:system/xbin/scheduler \
-	$(DEVICE_PREBUILT)/xbin/speed:system/xbin/speed
+	$(DEVICE_PREBUILT)/xbin/scheduler:system/xbin/scheduler
 
 # Permissions files
 PRODUCT_COPY_FILES += \
@@ -213,4 +229,5 @@ PRODUCT_LOCALES += en_US
 
 $(call inherit-product, frameworks/base/build/phone-hdpi-512-dalvik-heap.mk)
 $(call inherit-product, hardware/ti/omap3/Android.mk)
+$(call inherit-product-if-exists, vendor/BlackICE/configs/common_phone.mk)
 $(call inherit-product-if-exists, vendor/moto/omap34com/device-vendor.mk)
