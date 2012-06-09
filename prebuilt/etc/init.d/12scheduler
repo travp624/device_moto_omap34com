@@ -1,4 +1,4 @@
-#!/system/xbin/bash
+#!/system/bin/sh
 
 # options: 'noop cfq sio'
 SCHED="sio"
