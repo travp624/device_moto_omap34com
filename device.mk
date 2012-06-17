@@ -207,7 +207,7 @@ PRODUCT_COPY_FILES += \
 
 # HWUI Blacklist
 PRODUCT_COPY_FILES += \
-	device/moto/omap34com/hwui-blacklist.txt:system/hwui-blacklist.txt
+	device/moto/omap34com/hwui-whitelist.txt:system/hwui-whitelist.txt
 
 # Copy all common kernel modules
 PRODUCT_COPY_FILES += $(shell \
