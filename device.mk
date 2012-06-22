@@ -45,7 +45,10 @@ PRODUCT_PACKAGES += \
 
 # ICS graphics
 PRODUCT_PACKAGES += \
-	libEGL libGLESv2 libGLESv1_CM libgtest
+	libEGL libGLESv2 libGLESv1_CM
+ifdef OMAP_ENHANCEMENT
+PRODUCT_PACKAGES += += hwcomposer.omap3
+endif
 
 # Jpeg hw encoder/decoder
 PRODUCT_PACKAGES += \
@@ -88,7 +91,7 @@ PRODUCT_PACKAGES += \
 	lights.omap3 e2fsck usbd
 
 # Apps and bin
-PRODUCT_PACKAGES += Superuser su FileManager Torch Usb Apollo GanOptimizer
+PRODUCT_PACKAGES += Superuser su FileManager Usb Apollo
 
 # Live Wallpapers
 PRODUCT_PACKAGES += \
@@ -159,8 +162,10 @@ PRODUCT_COPY_FILES += \
 
 # Prebuilts
 PRODUCT_COPY_FILES += \
-	$(DEVICE_PREBUILT)/bin/mount_ext3.sh:system/bin/mount_ext3.sh \
 	$(DEVICE_PREBUILT)/bin/adbd:system/bin/adbd \
+	$(DEVICE_PREBUILT)/bin/backuptool.sh:system/bin/backuptoo.sh \
+	$(DEVICE_PREBUILT)/bin/mount_ext3.sh:system/bin/mount_ext3.sh \
+	$(DEVICE_PREBUILT)/bin/sysinit:system/bin/sysinit \
 	$(DEVICE_PREBUILT)/etc/apns-conf.xml:system/etc/apns-conf.xml \
 	$(DEVICE_PREBUILT)/etc/egl.cfg:system/etc/egl.cfg \
 	$(DEVICE_PREBUILT)/etc/gps.conf:system/etc/gps.conf \
@@ -174,7 +179,8 @@ PRODUCT_COPY_FILES += \
 	$(DEVICE_PREBUILT)/etc/init.d/13kernel:system/etc/init.d/13kernel \
 	$(DEVICE_PREBUILT)/etc/init.d/14multitouch:system/etc/init.d/14multitouch \
 	$(DEVICE_PREBUILT)/xbin/multitouch:system/xbin/multitouch \
-	$(DEVICE_PREBUILT)/xbin/scheduler:system/xbin/scheduler
+	$(DEVICE_PREBUILT)/xbin/scheduler:system/xbin/scheduler \
+	$(DEVICE_PREBUILT)/xbin/speed:system/xbin/speed
 
 # Permissions files
 PRODUCT_COPY_FILES += \
@@ -201,10 +207,6 @@ PRODUCT_COPY_FILES += \
 PRODUCT_COPY_FILES += \
 	$(DEVICE_PREBUILT)/bin/hijack:system/bin/hijack \
 	$(DEVICE_PREBUILT)/bin/hijack.log_dump:system/bin/hijack.log_dump \
-
-# HWUI Blacklist
-PRODUCT_COPY_FILES += \
-	device/moto/omap34com/hwui-whitelist.txt:system/hwui-whitelist.txt
 
 # Copy all common kernel modules
 PRODUCT_COPY_FILES += $(shell \
@@ -236,8 +238,7 @@ PRODUCT_PROPERTY_OVERRIDES += \
 	dalvik.vm.checkjni=false \
 	com.ti.omap_compat=1
 ifdef OMAP_ENHANCEMENT
-PRODUCT_PROPERTY_OVERRIDES += \
-	com.ti.omap_enhancement=true
+PRODUCT_PROPERTY_OVERRIDES += com.ti.omap_enhancement=true
 endif
 
 # we have enough storage space to hold precise GC data

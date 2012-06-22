@@ -102,6 +102,11 @@ class EdifyGenerator(object):
     self.script.append('set_perm(0, 0, 0777, "/tmp/backuptool.sh");')
     self.script.append(('run_program("/tmp/backuptool.sh", "%s");' % command))
 
+  def RunChkKineto(self):
+    self.script.append('package_extract_file("system/bin/chkkineto.sh", "/tmp/chkkineto.sh");')
+    self.script.append('set_perm(0, 0, 0777, "/tmp/chkkineto.sh");')
+    self.script.append('run_program("/tmp/chkkineto.sh");')
+
   def RunVerifyCachePartitionSize(self):
     self.script.append('package_extract_file("system/bin/verify_cache_partition_size.sh", "/tmp/verify_cache_partition_size.sh");')
     self.script.append('set_perm(0, 0, 0777, "/tmp/verify_cache_partition_size.sh");')
@@ -208,12 +213,12 @@ class EdifyGenerator(object):
     fstab = self.info.get("fstab", None)
     if fstab:
       p = fstab[partition]
-      self.script.append('format("%s", "%s", "%s", 0);' %
+      self.script.append('format("%s", "%s", "%s");' %
                          (p.fs_type, common.PARTITION_TYPES[p.fs_type], p.device))
     else:
       # older target-files without per-partition types
-      partition = self.info.get("partition_path", "") + partition.lstrip("/")
-      self.script.append('format("%s", "%s", "%s", 0);' %
+      partition = self.info.get("partition_path", "") + partition
+      self.script.append('format("%s", "%s", "%s");' %
                          (self.info["fs_type"], self.info["partition_type"],
                           partition))
 
